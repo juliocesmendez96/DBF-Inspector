@@ -1,0 +1,32 @@
+name: Build DBF Inspector
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build executable
+        run: pyinstaller --onefile --name DBF_Inspector dbf_inspector.py
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: DBF_Inspector
+          path: dist/DBF_Inspector.exe
